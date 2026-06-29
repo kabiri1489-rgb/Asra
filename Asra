@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پیامی برای تو</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;900&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
+
+  :root {
+    --night-deep: #1a1530;
+    --night-mid: #2d2150;
+    --plum: #4a2e5c;
+    --rose: #e8a0bf;
+    --gold: #f0c987;
+    --cream: #fdf6ee;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: radial-gradient(ellipse at top, var(--night-mid) 0%, var(--night-deep) 55%, #0f0c1f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* stars */
+  .stars {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--cream);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: twinkle 3.5s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.6); }
+  }
+
+  /* floating hearts - the signature element */
+  .heart-field {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .heart {
+    position: absolute;
+    bottom: -10%;
+    font-size: 18px;
+    opacity: 0;
+    animation: rise 9s linear infinite;
+    filter: drop-shadow(0 0 6px rgba(232, 160, 191, 0.5));
+  }
+  @keyframes rise {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+    8% { opacity: 0.85; }
+    85% { opacity: 0.5; }
+    100% { transform: translateY(-115vh) translateX(var(--drift, 20px)) rotate(20deg); opacity: 0; }
+  }
+
+  .card {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 56px 40px;
+    max-width: 480px;
+    transition: transform 0.4s ease;
+  }
+
+  .envelope {
+    font-size: 56px;
+    margin-bottom: 28px;
+    display: inline-block;
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 8px 24px rgba(232, 160, 191, 0.35));
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+  }
+
+  .message {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 2.1;
+    color: var(--cream);
+    text-shadow: 0 2px 20px rgba(232, 160, 191, 0.25);
+    transition: font-size 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .message .gold-word {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .card.grown .message {
+    font-size: 30px;
+    transform: scale(1.04);
+  }
+
+  .hint {
+    margin-top: 36px;
+    font-size: 13px;
+    color: rgba(253, 246, 238, 0.4);
+    letter-spacing: 0.3px;
+    transition: opacity 0.4s ease;
+  }
+
+  .card.grown .hint {
+    opacity: 0;
+  }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rose), transparent);
+    margin: 26px auto 0;
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+  <div class="stars" id="stars"></div>
+  <div class="heart-field" id="heartField"></div>
+
+  <div class="card" id="card">
+    <div class="envelope">💌</div>
+    <p class="message">
+      حالا که تا اینجا اومدی<br>
+      <span class="gold-word">لبخند</span> فراموش نشه 😄😉❤️
+    </p>
+    <div class="divider"></div>
+    <p class="hint">برای تو، با یک لبخند</p>
+  </div>
+
+  <script>
+    // stars
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 60; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 100 + '%';
+      s.style.animationDelay = (Math.random() * 3.5) + 's';
+      starsEl.appendChild(s);
+    }
+
+    // floating hearts
+    const heartChars = ['❤️', '💕', '💗', '💓'];
+    const heartField = document.getElementById('heartField');
+    function spawnHeart() {
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+      h.style.left = Math.random() * 100 + '%';
+      h.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+      h.style.animationDuration = (7 + Math.random() * 5) + 's';
+      h.style.fontSize = (14 + Math.random() * 14) + 'px';
+      heartField.appendChild(h);
+      setTimeout(() => h.remove(), 13000);
+    }
+    setInterval(spawnHeart, 700);
+    for (let i = 0; i < 6; i++) setTimeout(spawnHeart, i * 300);
+
+    // tap interaction: the smile grows
+    const card = document.getElementById('card');
+    document.body.addEventListener('click', () => {
+      card.classList.add('grown');
+      for (let i = 0; i < 10; i++) setTimeout(spawnHeart, i * 60);
+    });
+  </script>
+</body>
+</html>
